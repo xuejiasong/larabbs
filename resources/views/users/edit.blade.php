@@ -31,10 +31,6 @@
                             <label for="introduction-field">个人简介</label>
                             <textarea name="introduction" id="introduction-field" class="form-control" rows="3">{{ old('introduction', $user->introduction) }}</textarea>
                         </div>
-                        <div class="form-group">
-                            <label for="introduction-field">个人简介</label>
-                            <textarea name="introduction" id="introduction-field" class="form-control" rows="3">{{ old('introduction', $user->introduction) }}</textarea>
-                        </div>
 
                         <div class="form-group mb-4">
                             <label for="" class="avatar-label">用户头像</label>
