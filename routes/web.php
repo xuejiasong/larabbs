@@ -25,3 +25,5 @@ Route::get('email/resend', 'Auth\VerificationController@resend')->name('verifica
 //用户个人资料的编辑
 Route::resource('users','UsersController',['only'=>['show','edit','update']]);
 Route::resource('topics', 'TopicsController', ['only' => ['index', 'show', 'create', 'store', 'update', 'edit', 'destroy']]);
+
+Route::resource('categories', 'CategoriesController', ['only' => ['show']]);
