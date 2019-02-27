@@ -6,10 +6,12 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use App\Http\Requests\UserRequest;
 use App\Handlers\ImageUploadHandler;
+use Spatie\Permission\Traits\HasRoles;
 
 class UsersController extends Controller
 {
     //
+    use HasRoles;
     public function __construct()
     {
         $this->middleware('auth', ['except' => ['show']]);
