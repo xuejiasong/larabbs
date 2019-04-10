@@ -11,7 +11,17 @@ class VerificationCodesController extends Controller
 
     public function store(VerificationCodeRequest $request,EasySms $easySms)
     {
-        $phone = $request->phone;
+        $captchaData = \Cache::get($request->captcha_key);
+        if(!$captchaData){
+            return $this->response->error('图片验证码失效',422);
+        }
+        if(!hash_equals($captchaData['code'], $request->captcha_code)){
+            \Cache::forget($request->captcha_key);
+            return $this->response->errorUnauthorized('验证码错误');
+        }
+
+        //$phone = $request->phone;
+        $phone = $captchaData['phone'];
 
         //模拟环境
         if (!app()->environment('production')) {
@@ -46,9 +56,11 @@ class VerificationCodesController extends Controller
         $expiredAt = now()->addMinutes(10);
         //缓存验证码10分钟过期
         \Cache::put($key, ['phone' => $phone, 'code' => $code], $expiredAt);
+        //清除图片验证码缓存
+        \Cache::forget($request->captcha_key);
         return $this->response->array([
             'key' => $key,
-            'expirAt_at' => $expiredAt->toDateString()
+            'expirAt_at' => $expiredAt->toDateTimeString(),
             ])->setStatusCode(201);
     }
 }
