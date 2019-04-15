@@ -14,37 +14,46 @@ $api->version('v1', [
        'expires' => config('api.rate_limits.sign.expires'),
    ],function ($api){
        //游客可以访问的接口
+                // 短信验证码
+                       $api->post('verificationCodes', 'VerificationCodesController@store')
+                           ->name('api.verificationCodes.store');
+                //用户注册
+                       $api->post('users','UsersController@store')
+                           ->name('api.users.store');
+                //图片验证码
+                     $api->post('captchas','CaptchasController@store')
+                         ->name('api.captchas.store');
+                //        //第三方登录
+                //             $api->post('socials/{social_type}/authorizations','AuthorizationsController@socialStore')
+                //                 ->name('api.socials.authorizations.store');
+               // 第三方登录
+               $api->post('socials/{social_type}/authorizations', 'AuthorizationsController@socialStore')
+                   ->name('api.socials.authorizations.store');
+               //登录
+               $api->post('authorizations','AuthorizationsController@store')
+                   ->name('api.authorization.store');
+               //刷新token
+               $api->put('authorizations/current','AuthorizationsController@update')
+                   ->name('api.authorizations.update');
+               //删除token
+               $api->delete('authorizations/current','AuthorizationsController@destroy')
+                   ->name('api.authorizations.destroy');
 
        //需要token验证的接口
        $api->group(['middleware' => 'api.auth'], function ($api){
            //当前登录用户信息
            $api->get('user','UsersController@me')
                ->name('api.user.show');
+           //编辑个人资料
+            //put 替换某个资源，需提供完整的资源信息
+            //patch 部分修改资源，提供部分资源信息
+           $api->patch('user','UsersController@update')
+               ->name('api.user.update');
+           // 图片资源
+           $api->post('images', 'ImagesController@store')
+               ->name('api.images.store');
        });
-        // 短信验证码
-               $api->post('verificationCodes', 'VerificationCodesController@store')
-                   ->name('api.verificationCodes.store');
-        //用户注册
-               $api->post('users','UsersController@store')
-                   ->name('api.users.store');
-        //图片验证码
-             $api->post('captchas','CaptchasController@store')
-                 ->name('api.captchas.store');
-//        //第三方登录
-//             $api->post('socials/{social_type}/authorizations','AuthorizationsController@socialStore')
-//                 ->name('api.socials.authorizations.store');
-       // 第三方登录
-       $api->post('socials/{social_type}/authorizations', 'AuthorizationsController@socialStore')
-           ->name('api.socials.authorizations.store');
-       //登录
-       $api->post('authorizations','AuthorizationsController@store')
-           ->name('api.authorization.store');
-       //刷新token
-       $api->put('authorizations/current','AuthorizationsController@update')
-           ->name('api.authorizations.update');
-       //删除token
-       $api->delete('authorizations/current','AuthorizationsController@destroy')
-           ->name('api.authorizations.destroy');
+
 
    });
 });
