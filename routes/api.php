@@ -5,13 +5,22 @@ use Illuminate\Http\Request;
 $api = app('Dingo\Api\Routing\Router');
 
 $api->version('v1', [
-    'namespace' => 'App\Http\Controllers\Api'
+    'namespace' => 'App\Http\Controllers\Api',
+    'middleware' =>  'serializer:array'
 ], function($api) {
    $api->group([
        'middleware' => 'api.throttle',
        'limit' => config('api.rate_limits.sign.limit'),
        'expires' => config('api.rate_limits.sign.expires'),
    ],function ($api){
+       //游客可以访问的接口
+
+       //需要token验证的接口
+       $api->group(['middleware' => 'api.auth'], function ($api){
+           //当前登录用户信息
+           $api->get('user','UsersController@me')
+               ->name('api.user.show');
+       });
         // 短信验证码
                $api->post('verificationCodes', 'VerificationCodesController@store')
                    ->name('api.verificationCodes.store');
