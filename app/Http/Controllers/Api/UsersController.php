@@ -25,7 +25,7 @@ class UsersController extends Controller
 
         return $this->response->item($user, new UserTransformer());
     }
-    
+
     public function store(UserRequest $request)
     {
         $verifyData = \Cache::get($request->verification_key);
