@@ -47,10 +47,7 @@ $api->version('v1', [
            ->name('api.users.topics.index');
        $api->get('topics/{topic}','TopicsController@show')
            ->name('api.topics.show');
-       $api->delete('topics/{topic}','TopicsController@destroy')
-           ->name('api.topics.destroy');
-       $api->post('topics/{topic}/replies','RepliesController@store')
-           ->name('api.topics.replies.store');
+
 
        //需要token验证的接口
        $api->group(['middleware' => 'api.auth'], function ($api){
@@ -72,6 +69,16 @@ $api->version('v1', [
                ->name('api.topics.update');
            $api->delete('topics/{topics}','TopicsController@destroy')
                ->name('api.topics.destroy');
+
+           //  删除文章
+           $api->delete('topics/{topic}','TopicsController@destroy')
+               ->name('api.topics.destroy');
+           //发布回复
+           $api->post('topics/{topic}/replies','RepliesController@store')
+               ->name('api.topics.replies.store');
+           //删除回复
+           $api->delete('topics/{topic}/replies/{reply}', 'RepliesController@destroy')
+               ->name('api.topics.replies.destroy');
        });
    });
 });
