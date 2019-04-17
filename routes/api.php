@@ -23,8 +23,8 @@ $api->version('v1', [
        $api->post('captchas','CaptchasController@store')
            ->name('api.captchas.store');
        //        //第三方登录
-       //             $api->post('socials/{social_type}/authorizations','AuthorizationsController@socialStore')
-       //                 ->name('api.socials.authorizations.store');
+       //$api->post('socials/{social_type}/authorizations','AuthorizationsController@socialStore')
+       //->name('api.socials.authorizations.store');
        // 第三方登录
        $api->post('socials/{social_type}/authorizations', 'AuthorizationsController@socialStore')
            ->name('api.socials.authorizations.store');
@@ -47,6 +47,10 @@ $api->version('v1', [
            ->name('api.users.topics.index');
        $api->get('topics/{topic}','TopicsController@show')
            ->name('api.topics.show');
+       $api->delete('topics/{topic}','TopicsController@destroy')
+           ->name('api.topics.destroy');
+       $api->post('topics/{topic}/replies','RepliesController@store')
+           ->name('api.topics.replies.store');
 
        //需要token验证的接口
        $api->group(['middleware' => 'api.auth'], function ($api){
