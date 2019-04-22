@@ -16,4 +16,5 @@ class Model extends EloquentModel
         return $query->orderBy('order', 'desc');
     }
 
+
 }
