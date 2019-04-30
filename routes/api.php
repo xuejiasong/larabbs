@@ -72,6 +72,7 @@ $api->version('v1', [
             //patch 部分修改资源，提供部分资源信息
      $api->patch('user','UsersController@update')
      ->name('api.user.update');
+     $api->put('user', 'UsersController@update')->name('api.user.update');
            // 图片资源
      $api->post('images', 'ImagesController@store')
      ->name('api.images.store');
