@@ -7,7 +7,7 @@ use App\Models\Topic;
 
 class TopicPolicy extends Policy
 {
-    public function update(User $user, Topic $topic)
+     public function update(User $user, Topic $topic)
     {
         return $user->isAuthorOf($topic);
     }
